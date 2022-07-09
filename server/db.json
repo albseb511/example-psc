@@ -1,0 +1,19 @@
+{
+  "products": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    },
+    {
+      "id": 3
+    },
+    {
+      "name": "S",
+      "price": "123",
+      "image_url": "https://i.imgur.com/zM6XQ2P.png",
+      "id": 4
+    }
+  ]
+}
