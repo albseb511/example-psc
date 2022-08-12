@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <input placeholder="add something" id="input" />
+        <button id="add-btn">ADD</button>
+    </div>
+    <div id="container">
+
+    </div>
+    <script>
+        class Todo {
+            // private
+            #todos;
+            #onUpdateCallback
+            constructor() {
+                this.#todos = [];
+            }
+            get items() {
+                return this.#todos;
+            }
+            addTodo(title) {
+                const newItem = {
+                id: Date.now() + title,
+                title: title,
+                status: false
+                };
+                this.#todos = [...this.#todos, newItem];
+                if(this.#onUpdateCallback){
+                    // invoke the callback everytime you add a new todo
+                    this.#onUpdateCallback()
+                }
+            }
+            toggleStatus(id) {
+                this.#todos = this.#todos.map((todo) =>
+                todo.id === id ? { ...todo, status: !todo.status } : todo
+                );
+                if(this.#onUpdateCallback){
+                    // invoke the callback everytime you update the status todo
+                    this.#onUpdateCallback()
+                }
+            }
+            deleteItem(id) {
+                this.#todos = this.#todos.filter((todo) => todo.id !== id);
+                if(this.#onUpdateCallback){
+                    // invoke the callback everytime you delete a todo
+                    this.#onUpdateCallback()
+                }
+            }
+            updateCallback(cb){
+                this.#onUpdateCallback = cb;
+            }
+        }
+        // CRUD
+        // CURD
+        const list = new Todo();
+        list.updateCallback(renderDom)
+
+        window.addEventListener("load",()=>{
+            const addBtn = document.getElementById("add-btn");
+
+            addBtn.addEventListener("click",()=>{
+                const text = document.getElementById("input").value;
+                list.addTodo(text)
+                console.log(`new list`,list.items)
+            })
+        })
+
+        // Todo Component
+        function TodoItem({
+            id,
+            title,
+            status
+        }){
+            const div = document.createElement("div");
+            const li = document.createElement("li");
+            li.innerHTML  = `${title} - ${status.toString()}`
+            const toggle = document.createElement("button");
+            toggle.textContent = "TOGGLE"
+            toggle.addEventListener("click", ()=>list.toggleStatus(id) )
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "DELETE"
+            delBtn.addEventListener("click", ()=>list.deleteItem(id) )
+            div.append(li,toggle,delBtn)
+            return div
+        }
+
+        function renderDom(){
+            const container = document.getElementById("container");
+            container.innerHTML = null;
+            const listItemElements = list.items.map(todo=>TodoItem(todo))
+            container.append(...listItemElements)
+            // <div> {list.map(todo=><TodoItem />)} </div>
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        Count
+        <div id="count-value"></div>
+    </div>
+    <div id="container">
+        <button id="add">ADD</button>
+        <button id="reduce">REDUCE</button>
+    </div>
+    <div id="target">
+
+    </div>
+    <script>
+        let counter = Counter(0);
+        window.addEventListener("load",()=>{
+            const add = document.getElementById("add")
+            const reduce = document.getElementById("reduce")
+            const countContainer = document.getElementById("count-value");
+            countContainer.textContent = counter.getValue()
+            counter.subscribe( ()=>{
+                countContainer.textContent = counter.getValue()
+            } )
+            add.addEventListener("click", counter.handleAdd)
+            reduce.addEventListener("click", counter.handleReduce)
+        })
+
+        function Counter(initValue = 0){
+            let value = initValue;
+            let callback = null;
+            function handleAdd(){
+                value++
+                console.log(value)
+                if(callback) callback()
+            }
+            function handleReduce(){
+                value--
+                console.log(value)
+                if(callback) callback()
+            }
+            function getValue(){
+                return value
+            }
+            function subscribe(cb){
+                callback = cb
+            }
+            return { getValue, handleAdd, handleReduce, subscribe }
+        }
+
+
+        function Button(props){
+            const { children, onClick } = props;
+            const button = document.createElement("button");
+            button.append(children);
+            button.addEventListener("click",onClick)
+            button.style.fontWeight = 600;
+            return button
+        }
+
+        const target = document.getElementById("target");
+
+        function handleClick(){
+            alert("pop");
+        }
+
+        let p = document.createElement("p");
+        p.textContent = "CLICK ME"
+
+        let out = Button( { children: p, onClick: handleClick  } )
+        target.append(out)
+
+    </script>
+</body>
+</html>

@@ -57,6 +57,10 @@ export default function AppContextProvider({
             navigate("/")
         })
     }   
+    // useReducer
+    // reducer, dispatch
+    // reducer -> UPDATE_NAME_PRICE, UPDATE_IMAGE_URL
+    // 
     return (
         <AppContext.Provider value={{ productState, updateNameAndPrice, updateImage, saveDataToServer }}>
             {children}

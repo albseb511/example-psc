@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Counter</h1>
+        <h3 id="value"></h3>
+        <button id="add-btn">ADD</button>
+        <button>REDUCE</button>
+    </div>
+    <script>
+        class Counter{
+        #value
+        #onUpdateCallback
+        constructor(init){
+            this.#value = init;
+        }
+        get value(){
+            return this.#value
+        }
+        set setValue(newValue){
+            this.#value = newValue;
+            this.#onUpdateCallback()
+            return this.#value
+        }
+        onUpdate(callback){
+            this.#onUpdateCallback = callback
+        }
+
+        }
+        const counter = new Counter(0)
+        window.addEventListener("load",()=>{
+            const val = document.getElementById("value");
+            val.textContent  = counter.value;
+
+            counter.onUpdate(function(){
+                val.textContent = counter.value
+            })
+
+            const addBtn = document.getElementById("add-btn");
+            addBtn.addEventListener("click",()=>{
+                counter.setValue= counter.value + 1 
+            })
+
+        })
+    </script>
+</body>
+</html>

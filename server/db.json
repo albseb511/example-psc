@@ -15,5 +15,42 @@
       "image_url": "https://i.imgur.com/zM6XQ2P.png",
       "id": 4
     }
+  ],
+  "tasks": [
+    {
+      "title": "LEARN FETCH",
+      "status": true,
+      "id": 1
+    },
+    {
+      "title": "LEARN GET",
+      "status": false,
+      "id": 2
+    },
+    {
+      "title": "LEARN POST",
+      "status": false,
+      "id": 3
+    },
+    {
+      "title": "LEARN PATCH",
+      "status": true,
+      "id": 4
+    },
+    {
+      "title": "LEARN DELETE",
+      "status": true,
+      "id": 5
+    },
+    {
+      "title": "ADD SOMETHING",
+      "status": false,
+      "id": 6
+    },
+    {
+      "title": "ZEAL",
+      "status": false,
+      "id": 7
+    }
   ]
 }

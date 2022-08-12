@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .loader {
+      border: 8px solid #f3f3f3; /* Light grey */
+      border-top: 8px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+    }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+    
+    </style>
+</head>
+<body>
+    <div id="target">
+
+    </div>
+    <script>
+        let loading = true;
+        let data = []
+        let page = 1;
+        let totalPages = 1;
+        renderDom( data, target, totalPages )
+        window.addEventListener("load",()=>{
+            let target = document.getElementById("target");
+            handleGetUsersAndAppendDom()
+        })
+
+        function handleGetUsersAndAppendDom(){
+            return getUsers({ page })
+            .then(res=>{
+                data = res.data;
+                totalPages = res.total_pages;
+                console.log(totalPages)
+                console.log(data)
+                loading = false;
+                renderDom( data, target, totalPages )
+            })
+        }
+
+        function createLoadingIndicator(){
+            let container = document.createElement("div")
+            container.id = "loading-indicator";
+            container.classList = "loader"
+            return container;
+        }
+
+        function createCard(data){
+            let div = document.createElement("div");
+            let img = new Image()
+            img.src = data.avatar;
+            let p = document.createElement("p");
+            p.textContent = `${data.first_name} ${data.last_name}`
+            div.append(img,p);
+            return div;
+        }
+
+        function createButton(text,onClick,disabled){
+            const button = document.createElement("button");
+            button.addEventListener("click",onClick);
+            button.disabled = disabled;
+            button.textContent = text;
+            return button
+        }
+
+        function createPagination(total,current){
+            let arr = new Array(totalPages).fill(0).map((a,i)=>i+1);
+
+            return arr.map( page => createButton( page, ()=>{
+                handlePageChange(page)
+            }, page === current  ) )
+        }
+
+        function renderDom(users,target, totalPages){
+            target.innerHTML = null;
+            if(loading){
+                let cont = createLoadingIndicator();
+                console.log(cont)
+                target.append(cont)
+                return
+            }
+            let usersContainer = users.map( user=> createCard(user) )
+            let pagination = createPagination(users.length, page)
+            const cont = document.createElement("div");
+            cont.append(...usersContainer, ...pagination)
+
+            cont.addEventListener("click",()=>{
+                alert("pop")
+                console.log(`does it come here`)
+            })
+
+            target.append(cont)
+        }
+
+        function handlePageChange(newPage){
+            page = newPage;
+            loading = true
+            handleGetUsersAndAppendDom()
+        }
+
+        function getUsers({page=1}){
+            return fetch(`https://reqres.in/api/users?page=${page}`)
+            .then(res=>res.json())
+        }
+
+    </script>
+</body>
+</html>
